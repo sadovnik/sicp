@@ -4,7 +4,7 @@
 
 (provide cube-root)
 
-(define precision 0.0001)
+(define precision 0.00000001)
 
 (define (sqrt-iter current-guess old-guess x)
         (if (good-enough? current-guess old-guess)
@@ -12,10 +12,10 @@
             (sqrt-iter (improve current-guess x) current-guess x)))
 
 (define (improve guess x)
-        (average guess (/ x (sqr guess))))
+        (average (/ x (sqr guess)) (* 2 guess)))
 
 (define (average x y)
-        (/ (+ x (* y 2)) 3))
+        (/ (+ x y) 3))
 
 (define (good-enough? old-guess new-guess)
         (< (abs (- old-guess new-guess)) precision))
