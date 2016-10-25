@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.13}
+\usepackage[utf8]{inputenc}
+
+\title{SICP 1-13 exercise}
+\author{Cyril Sadovnik }
+\date{October 2016}
+
+\begin{document}
+
+\maketitle
+
+\section{Exercise}
+
+Prove that \(Fib(n)\) is the closest integer to \(\frac{\phi^n}{\sqrt 5}\), where \(\phi = \frac{1 + \sqrt 5}{2}\).
+Hint: let \(\psi = \frac{1 - \sqrt 5}{2}\). Use induction and the defenition of the Fibonacci numbers to prove that \(Fib(n) = \frac{\phi^n - \psi^n}{\sqrt 5}\).
+
+\section{Solutioin}
+So we need to prove that \(Fib(n)\) is the closest integer to \(\frac{\phi^n}{\sqrt 5}\) by proving that \(Fib(n) = \frac{\phi^n - \psi^n}{\sqrt 5}\) using induction.
+
+\subsection{Base step}
+
+Let's check the formula for \(n = 1\):
+
+\[ Fib(1) = \frac{\phi^1 - \psi^1}{\sqrt 5}\]
+\[ 1 = \frac{\phi^1 - \psi^1}{\sqrt 5}\]
+\[ 1 = \frac{\frac{1 + \sqrt 5}{2} - \frac{1 - \sqrt 5}{2}}{\sqrt 5}\]
+\[ 1 = \frac{\frac{1 + \sqrt 5 - 1 + \sqrt 5}{2}}{\sqrt 5}\]
+\[ 1 = \frac{\frac{2 \sqrt 5}{2}}{\sqrt 5}\]
+\[ 1 = \frac{\sqrt 5}{\sqrt 5}\]
+\[ 1 = 1\]
+
+\subsection{Induction step}
+
+Assuming it works for \(n = k\) and \(n = k - 1\), it must work for \(n = k + 1\) also:
+\[ Fib(k + 1) = \frac{\phi^{k + 1} - \psi^{k + 1}}{\sqrt 5} \]
+
+By defenition of \(Fib\): \(Fib(k + 1) = Fib(k - 1) + Fib(k)\), so
+\[ Fib(k + 1) = \frac{\phi^{k - 1} - \psi^{k - 1}}{\sqrt 5} + \frac{\phi^k - \psi^k}{\sqrt 5} \]
+
+Let's evaluate the right part of this equation and see what we got.
+
+\[ \frac{\phi^{k - 1} - \psi^{k - 1}}{\sqrt 5} + \frac{\phi^k - \psi^k}{\sqrt 5} = \]
+\[ \frac{\phi^{k - 1} - \psi^{k - 1} + \phi^k - \psi^k}{\sqrt 5} = \]
+\[ \frac{\phi^{k - 1} + \phi^k - \psi^k - \psi^{k - 1}}{\sqrt 5} = ... \]
+
+Now let's stop for a sec and consider this property of \(\phi\) and \(\psi\) :
+
+\[ \phi = \frac{1}{\phi} + 1 \]
+
+Same is true for \(\psi\).
+
+\[ \frac{\phi^{k + 1} (\phi^{-2} + \phi^{-1}) - \psi^{k + 1}(\psi^{-2} + \psi^{-1}))}{\sqrt 5} = \]
+\[ \frac{\phi^{k + 1} \phi^{-1} (\phi^{-1} + 1) - \psi^{k + 1} \psi^{-1} (\psi^{-1} + 1))}{\sqrt 5} = \]
+\[ \frac{\phi^{k + 1} \phi^{-1} (\phi^{-1} + 1) - \psi^{k + 1} \psi^{-1} (\psi^{-1} + 1))}{\sqrt 5} = \]
+\[ \frac{\phi^{k + 1} \phi^{-1} (\frac{1}{\phi} + 1) - \psi^{k + 1} \psi^{-1} (\frac{1}{\psi} + 1))}{\sqrt 5} = \]
+
+Here comes the fun part. Using the property mentioned above we can now reduce expressions in the brackets:
+
+\[ \frac{\phi^{k + 1} \phi^{-1} (\phi) - \psi^{k + 1} \psi^{-1} (\psi)}{\sqrt 5} = \]
+\[ \frac{\phi^{k + 1} \phi^{-1} (\phi) - \psi^{k + 1} \psi^{-1} (\psi)}{\sqrt 5} = \]
+\[ \frac{\phi^{k + 1} - \psi^{k + 1}}{\sqrt 5} \]
+
+\subsection{Original hypothesis proof}
+
+Now we can go back to the original hypothesis: \(Fib(n)\) is the closest integer to \(\frac{\phi^n}{\sqrt 5}\), where \(\phi = \frac{1 + \sqrt 5}{2}\).
+
+\( \frac{\phi^n}{\sqrt 5} \) differs from \( \frac{\phi^n - \psi^n}{\sqrt 5}\) by \( \frac{\psi^n}{\sqrt 5} \) and always an integer for \( n \in N \) so the prof is a matter of proving that \( - 1/2 < \frac{\psi^n}{\sqrt 5} < 1/2 \) where \( n \in N \).
+
+Let's just analyze \( \frac{\psi^n}{\sqrt 5} \):
+
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel = $x$,
+    ylabel = {$\frac{\psi^n}{\sqrt 5}$},
+]
+\addplot [
+    color=red,
+    domain=0:10,
+    samples=10000
+]
+{ ((-0.61803398875)^x) / sqrt(5) };
+\end{axis}
+\end{tikzpicture}
+
+It's a descending function and it's maximum value on \(N\) (including 0) is approximately \( 0.4472135955 \), at \(x = 0\).
+
+\par
+quod erat demonstrandum
+
+\end{document}
