@@ -8,10 +8,7 @@
 (define (halve x) (/ x 2))
 
 (define (mult a b)
-  (define (iter a b i)
-    (if (even? b)
-      (if (= b 0)
-        i
-        (iter (double a) (halve b) i))
-      (iter a (- b 1) (+ i a))))
-  (iter a b 0))
+  (cond
+    ((= b 1) a)
+    ((even? b) (mult (double a) (halve b)))
+    (else (+ a (mult a (- b 1))))))
