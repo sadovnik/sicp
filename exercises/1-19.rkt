@@ -16,7 +16,7 @@
             (fib-iter a
                       b
                       (+ (double q) (double p))
-                      (+ (* p q) (double q) (* q p))
+                      (+ (* 2 p q) (double q))
                       (/ count 2)))
         (else (fib-iter (+ (* b q) (* a q) (* a p))
                         (+ (* b p) (* a q))
